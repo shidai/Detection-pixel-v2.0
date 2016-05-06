@@ -105,8 +105,6 @@ int main (int argc, char* argv[])
 		//preAllocateMemory (&acfStructure, &control);
 		//allocateMemory (&acfStructure);
 
-		calNoise (&noiseStructure, &control);
-		printf ("%lf\n", noiseStructure.detection);
 
 		//num = (int)((control.scint_ts1-control.scint_ts0)/control.scint_ts_step);
 		//for (tdiff=control.scint_ts0; tdiff<control.scint_ts1; tdiff+=control.scint_ts_step)
@@ -119,6 +117,8 @@ int main (int argc, char* argv[])
 
 			control.whiteLevel = control.whiteLevel0*sqrt(control.nsub*control.nchan);  // 0.1 gives 1 to a 10*10 dynamic spectrum
 				
+			calNoise (&noiseStructure, &control);
+			//printf ("%lf\n", noiseStructure.detection);
 			//printf ("tdiff fdiff: %lf %lf\n", tdiff, fdiff);
 			flux0 = control.cFlux0;
 			flux1 = control.cFlux1;
@@ -158,7 +158,7 @@ int main (int argc, char* argv[])
 				//printf ("%lf %f %d\n", control.cFlux, acfStructure.probability, nMax);
 			}
 			
-			printf ("%d %lf %f %d\n", control.nsub, control.whiteLevel, acfStructure.probability, nMax);
+			printf ("%d %lf %f %lf %d\n", control.nsub, control.whiteLevel, noiseStructure.detection, acfStructure.probability, nMax);
 		
 			deallocateMemory (&acfStructure);
 		}
