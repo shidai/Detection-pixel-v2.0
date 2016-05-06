@@ -158,7 +158,7 @@ int main (int argc, char* argv[])
 				//printf ("%lf %f %d\n", control.cFlux, acfStructure.probability, nMax);
 			}
 			
-			printf ("%d %lf %f %lf %d\n", control.nsub, control.whiteLevel, noiseStructure.detection, acfStructure.probability, nMax);
+			printf ("%d %lf %lf %f %lf %d\n", control.nsub, control.whiteLevel, noiseStructure.detection, control.cFlux, acfStructure.probability, nMax);
 		
 			deallocateMemory (&acfStructure);
 		}
