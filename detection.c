@@ -114,7 +114,7 @@ int main (int argc, char* argv[])
 		for (i=id; i<nt; i+=p)
 		{
 			control.nsub = tdiss[i];
-			control.tsub = control.T/control.nsub;
+			control.tsub = control.T/(double)(control.nsub);
 			control.scint_ts = control.tsub;
 
 			control.whiteLevel = control.whiteLevel0*sqrt(control.nsub*control.nchan);  // 0.1 gives 1 to a 10*10 dynamic spectrum
