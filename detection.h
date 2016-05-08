@@ -1012,15 +1012,15 @@ int readParams(char *fname, char *dname, int n, controlStruct *control)
 			endit=1;
 		else
 		{
-			//if (strcasecmp(param,"SCINT_TS")==0)
-			//	fscanf(fin,"%lf",&(control->scint_ts));
+			if (strcasecmp(param,"SCINT_TS")==0)
+				fscanf(fin,"%lf",&(control->scint_ts));
 			//if (strcasecmp(param,"SCINT_TS0")==0)
 			//	fscanf(fin,"%lf",&(control->scint_ts0));
 			//else if (strcasecmp(param,"SCINT_TS1")==0)
 			//	fscanf(fin,"%lf",&(control->scint_ts1));
 			//else if (strcasecmp(param,"SCINT_TS_STEP")==0)
 			//	fscanf(fin,"%lf",&(control->scint_ts_step));
-			if (strcasecmp(param,"SCINT_FREQBW")==0)
+			else if (strcasecmp(param,"SCINT_FREQBW")==0)
 				fscanf(fin,"%lf",&(control->scint_freqbw));	  
 			//else if (strcasecmp(param,"SCINT_FREQBW0")==0)
 			//	fscanf(fin,"%lf",&(control->scint_freqbw0));	  

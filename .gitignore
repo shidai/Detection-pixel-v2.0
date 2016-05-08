@@ -1,3 +1,5 @@
 detection
+detection_matched
 *out*
 *.swp
+result/
