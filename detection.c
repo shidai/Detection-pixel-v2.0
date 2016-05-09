@@ -114,52 +114,55 @@ int main (int argc, char* argv[])
 			control.nsub = tdiss[i];
 			control.tsub = control.T/(double)(control.nsub);
 
-			control.whiteLevel = control.whiteLevel0*sqrt(control.nsub*control.nchan);  // 0.1 gives 1 to a 10*10 dynamic spectrum
-				
-			calNoise (&noiseStructure, &control);
-			//printf ("%lf\n", noiseStructure.detection);
-			//printf ("tdiff fdiff: %lf %lf\n", tdiff, fdiff);
-			flux0 = control.cFlux0;
-			flux1 = control.cFlux1;
-
-			acfStructure.probability = 1.0;
-				
-			calculateScintScale (&acfStructure, &control);
-			//printf ("calculateScintScal\n");
-
-			nMax = 0;
-			while (fabs(acfStructure.probability-0.8)>=PRECISION && nMax <= 100)
+			if (((int)control.tsub%(int)control.scint_ts) == 0.0)
 			{
-				control.cFlux = flux0+(flux1-flux0)/2.0;
-				//printf ("%lf %lf %.8lf %.3f\n", tdiff, fdiff, control.cFlux, acfStructure.probability);
+				control.whiteLevel = control.whiteLevel0*sqrt(control.nsub*control.nchan);  // 0.1 gives 1 to a 10*10 dynamic spectrum
+					
+				calNoise (&noiseStructure, &control);
+				//printf ("%lf\n", noiseStructure.detection);
+				//printf ("tdiff fdiff: %lf %lf\n", tdiff, fdiff);
+				flux0 = control.cFlux0;
+				flux1 = control.cFlux1;
+
+				acfStructure.probability = 1.0;
+					
+				calculateScintScale (&acfStructure, &control);
+				//printf ("calculateScintScal\n");
+
+				nMax = 0;
+				while (fabs(acfStructure.probability-0.8)>=PRECISION && nMax <= 100)
+				{
+					control.cFlux = flux0+(flux1-flux0)/2.0;
+					//printf ("%lf %lf %.8lf %.3f\n", tdiff, fdiff, control.cFlux, acfStructure.probability);
 		
-				// simulate dynamic spectra
-				calculateNDynSpec (&acfStructure, &control, &noiseStructure);
+					// simulate dynamic spectra
+					calculateNDynSpec (&acfStructure, &control, &noiseStructure);
 
-				//if (control.noplot==0 && n == 1)
-				//{
-				//	// plot while simulating
-				//	heatMap (&acfStructure, dname);
-				//}
+					//if (control.noplot==0 && n == 1)
+					//{
+					//	// plot while simulating
+					//	heatMap (&acfStructure, dname);
+					//}
 
-				// merged into calculateNDynSpec
-				//qualifyVar (&acfStructure, &noiseStructure, &control);
+					// merged into calculateNDynSpec
+					//qualifyVar (&acfStructure, &noiseStructure, &control);
 
-				if (acfStructure.probability>0.8)
-				{
-					flux1 = control.cFlux;
+					if (acfStructure.probability>0.8)
+					{
+						flux1 = control.cFlux;
+					}
+					else 
+					{
+						flux0 = control.cFlux;
+					}
+					nMax++;
+					//printf ("%lf %f %d\n", control.cFlux, acfStructure.probability, nMax);
 				}
-				else 
-				{
-					flux0 = control.cFlux;
-				}
-				nMax++;
-				//printf ("%lf %f %d\n", control.cFlux, acfStructure.probability, nMax);
+				
+				printf ("%d %lf %lf %f %lf %d\n", control.nsub, control.whiteLevel, noiseStructure.detection, control.cFlux, acfStructure.probability, nMax);
+		
+				deallocateMemory (&acfStructure);
 			}
-			
-			printf ("%d %lf %lf %f %lf %d\n", control.nsub, control.whiteLevel, noiseStructure.detection, control.cFlux, acfStructure.probability, nMax);
-		
-			deallocateMemory (&acfStructure);
 		}
 
 		fflush (stdout);
